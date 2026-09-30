@@ -3,192 +3,116 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#02050a">
-<title>Tilt Liquid — iPhone Sensor Test</title>
+<title>Tilt Liquid — Dot Matrix</title>
 <style>
-:root{
-  --bg:#02050a; --panel:rgba(10,16,24,.82); --text:#eef8ff; --muted:#8da6bb;
-  --cyan:#62e7ff; --line:rgba(255,255,255,.10);
-}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-body{touch-action:none}
-.app{width:100vw;height:100dvh;display:grid;place-items:center;position:relative;
-  padding:max(56px,env(safe-area-inset-top)) 16px max(74px,env(safe-area-inset-bottom))}
-.dial{position:relative;width:min(90vw,72vh);aspect-ratio:1;border-radius:50%;overflow:hidden;
-  background:radial-gradient(circle at 48% 40%,#10202e 0%,#060b11 56%,#010204 100%);
-  box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 0 10px rgba(255,255,255,.035),
-  0 26px 90px rgba(0,0,0,.72),inset 0 0 80px rgba(0,0,0,.85)}
-canvas{width:100%;height:100%;display:block}
-.glass{position:absolute;inset:0;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle at 32% 18%,rgba(255,255,255,.14),transparent 17%),
-  linear-gradient(145deg,rgba(255,255,255,.055),transparent 30%);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
-.header{position:absolute;left:12px;right:12px;top:max(10px,env(safe-area-inset-top));text-align:center;pointer-events:none}
-.title{font-size:11px;font-weight:800;letter-spacing:.22em;color:#9cb4c8}
-.status{font-size:12px;margin-top:5px;color:rgba(238,248,255,.85)}
-.bottom{position:absolute;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));
-  max-width:560px;margin:auto;display:flex;gap:9px;align-items:center}
-.panel{background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-radius:15px;padding:9px 11px}
-.fillpanel{flex:1;display:flex;gap:9px;align-items:center}.fillpanel label{font-size:11px;color:var(--muted);white-space:nowrap}
-.fillpanel input{width:100%}
-.smallbtn{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);
-  border-radius:15px;padding:11px 13px;font-weight:700}
-.overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;
-  background:rgba(1,3,6,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.card{width:min(460px,100%);border:1px solid rgba(255,255,255,.11);background:#09111a;
-  border-radius:24px;padding:24px;box-shadow:0 30px 100px rgba(0,0,0,.65)}
-.card h1{font-size:23px;margin:0 0 10px;text-align:center}.card p{font-size:14px;line-height:1.65;color:var(--muted);margin:0 0 16px}
-.primary{width:100%;border:0;border-radius:15px;padding:15px;font-size:16px;font-weight:850;background:var(--cyan);color:#00151b}
-.note{font-size:11px!important;margin:12px 0 0!important;text-align:center}
-.hidden{display:none!important}
-.debug{position:fixed;z-index:40;inset:auto 10px calc(max(64px,env(safe-area-inset-bottom)) + 6px) 10px;
-  max-height:46vh;overflow:auto;background:rgba(3,8,13,.94);border:1px solid rgba(255,255,255,.12);
-  border-radius:16px;padding:12px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
-  white-space:pre-wrap;color:#ccecff}
-.warning{color:#ffd18b}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02050a;color:#eef8ff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+body{touch-action:none}.app{width:100vw;height:100dvh;display:grid;place-items:center;position:relative;padding:58px 16px 76px}
+.dial{position:relative;width:min(90vw,72vh);aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 48% 40%,#0a131c 0%,#04070b 65%,#010204 100%);box-shadow:0 0 0 1px #ffffff24,0 0 0 10px #ffffff08,0 26px 90px #000b,inset 0 0 80px #000d}
+canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.glass{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 32% 18%,#ffffff18,transparent 17%),linear-gradient(145deg,#ffffff0a,transparent 30%);box-shadow:inset 0 0 0 2px #ffffff14}
+.header{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));text-align:center;pointer-events:none}.title{font-size:11px;font-weight:800;letter-spacing:.22em;color:#9cb4c8}.status{font-size:12px;margin-top:5px;color:#eef8ffd9}
+.bottom{position:absolute;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));max-width:560px;margin:auto;display:flex;gap:9px;align-items:center}.panel{background:#0a1018d1;border:1px solid #ffffff1a;backdrop-filter:blur(14px);border-radius:15px;padding:9px 11px}.fillpanel{flex:1;display:flex;gap:9px;align-items:center}.fillpanel label{font-size:11px;color:#8da6bb;white-space:nowrap}.fillpanel input{width:100%}.smallbtn{border:1px solid #ffffff1f;background:#ffffff0f;color:#eef8ff;border-radius:15px;padding:11px 13px;font-weight:700}
+.overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;background:#010306e0;backdrop-filter:blur(18px)}.card{width:min(460px,100%);border:1px solid #ffffff1c;background:#09111a;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000a}.card h1{font-size:23px;margin:0 0 10px;text-align:center}.card p{font-size:14px;line-height:1.65;color:#8da6bb;margin:0 0 16px}.primary{width:100%;border:0;border-radius:15px;padding:15px;font-size:16px;font-weight:850;background:#62e7ff;color:#00151b}.note{font-size:11px!important;margin:12px 0 0!important;text-align:center}.hidden{display:none!important}
+.debug{position:fixed;z-index:40;inset:auto 10px calc(max(64px,env(safe-area-inset-bottom)) + 6px) 10px;max-height:46vh;overflow:auto;background:#03080df0;border:1px solid #ffffff1f;border-radius:16px;padding:12px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;color:#ccecff}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div class="title">TILT LIQUID / SENSOR TEST</div>
-    <div class="status" id="status">センサー待機中</div>
-  </div>
-
-  <div class="dial" id="dial">
-    <canvas id="canvas"></canvas>
-    <div class="glass"></div>
-  </div>
-
+  <div class="header"><div class="title">TILT LIQUID / DOT MATRIX</div><div class="status" id="status">センサー待機中</div></div>
+  <div class="dial" id="dial"><canvas id="canvas"></canvas><div class="glass"></div></div>
   <div class="bottom">
-    <div class="panel fillpanel">
-      <label>液体量</label>
-      <input id="fill" type="range" min="18" max="82" value="56">
-    </div>
+    <div class="panel fillpanel"><label>液体量</label><input id="fill" type="range" min="18" max="82" value="56"></div>
     <button class="smallbtn" id="debugBtn">診断</button>
   </div>
 </div>
-
-<div class="overlay" id="overlay">
-  <div class="card">
-    <h1>傾ける液体テスト</h1>
-    <p>
-      iPhoneの加速度センサーで、丸い窓の中の液体を重力方向へ動かします。
-      急に傾けると液面が遅れて揺れ、泡は上へ浮こうとします。
-    </p>
-    <button class="primary" id="startBtn">センサーを有効にする</button>
-    <p class="note">Safariでこのページを開いてから押してください。iOSの許可画面が出たら「許可」を選びます。</p>
-  </div>
-</div>
-
+<div class="overlay" id="overlay"><div class="card">
+  <h1>ドット液体テスト</h1>
+  <p>iPhoneを傾けると、ドットマトリクス状の液体が重力方向へ動きます。勢いよく傾けると液面がチャプチャプ揺れます。</p>
+  <button class="primary" id="startBtn">センサーを有効にする</button>
+  <p class="note">Safariで開いて、許可画面が出たら「許可」を選びます。</p>
+</div></div>
 <div class="debug hidden" id="debug"></div>
 
 <script>
 (()=>{
-'use strict';
-
-const $ = id => document.getElementById(id);
-const canvas=$('canvas'), ctx=canvas.getContext('2d'), dial=$('dial');
-const statusEl=$('status'), overlay=$('overlay'), startBtn=$('startBtn');
-const fillEl=$('fill'), debugEl=$('debug'), debugBtn=$('debugBtn');
+const $=id=>document.getElementById(id);
+const canvas=$('canvas'),ctx=canvas.getContext('2d'),dial=$('dial');
+const statusEl=$('status'),overlay=$('overlay'),startBtn=$('startBtn'),fillEl=$('fill');
+const debugEl=$('debug'),debugBtn=$('debugBtn');
 
 let W=600,H=600,cx=300,cy=300,R=290,dpr=1,fill=.56;
 let targetGX=0,targetGY=1,gx=0,gy=1;
 let wave=0,waveV=0,phase=0,lastT=performance.now();
-let lastGravityAngle=Math.PI/2, motionCount=0, orientCount=0;
+let lastGravityAngle=Math.PI/2,motionCount=0,orientCount=0,sensorActive=false,fallbackMode=false,pointerDown=false;
 let latest={ax:null,ay:null,az:null,beta:null,gamma:null,alpha:null,screenAngle:0};
-let sensorActive=false, fallbackMode=false, pointerDown=false;
 
-const bubbles=Array.from({length:16},()=>({
-  x:(Math.random()*2-1)*.48,
-  y:(Math.random()*2-1)*.34,
-  vx:0,vy:0,
-  r:.008+Math.random()*.017,
-  seed:Math.random()*Math.PI*2
-}));
+// ドット設定
+const GRID = 31;          // 31×31の仮想ドット
+const DOT_RATIO = 0.33;   // セル幅に対するドット半径
 
 function resize(){
   const r=dial.getBoundingClientRect();
-  dpr=Math.min(window.devicePixelRatio||1,2);
+  dpr=Math.min(devicePixelRatio||1,2);
   canvas.width=Math.round(r.width*dpr);
   canvas.height=Math.round(r.height*dpr);
-  W=canvas.width; H=canvas.height; cx=W/2; cy=H/2; R=Math.min(W,H)*.48;
+  W=canvas.width;H=canvas.height;cx=W/2;cy=H/2;R=Math.min(W,H)*.48;
 }
-addEventListener('resize',resize,{passive:true});
-resize();
+addEventListener('resize',resize,{passive:true});resize();
 
 function screenAngle(){
-  if(screen.orientation && typeof screen.orientation.angle==='number') return screen.orientation.angle;
-  if(typeof window.orientation==='number') return window.orientation;
+  if(screen.orientation&&typeof screen.orientation.angle==='number')return screen.orientation.angle;
+  if(typeof window.orientation==='number')return window.orientation;
   return 0;
 }
-
-function rotateForScreen(x,y,angle){
-  const a=((angle%360)+360)%360;
-  if(a===90) return {x:-y,y:x};
-  if(a===270) return {x:y,y:-x};
-  if(a===180) return {x:-x,y:-y};
-  return {x,y};
+function rotateForScreen(x,y,a){
+  a=((a%360)+360)%360;
+  if(a===90)return{x:-y,y:x};
+  if(a===270)return{x:y,y:-x};
+  if(a===180)return{x:-x,y:-y};
+  return{x,y};
 }
-
-function angleDiff(a,b){
+function adiff(a,b){
   let d=(a-b)%(Math.PI*2);
   if(d>Math.PI)d-=Math.PI*2;
   if(d<-Math.PI)d+=Math.PI*2;
   return d;
 }
-
 function setGravity(x,y,impulse=0){
-  const m=Math.hypot(x,y);
-  if(m<.08) return;
-  x/=m; y/=m;
-  const a=Math.atan2(y,x);
-  const da=angleDiff(a,lastGravityAngle);
+  const m=Math.hypot(x,y); if(m<.08)return;
+  x/=m;y/=m;
+  const a=Math.atan2(y,x),da=adiff(a,lastGravityAngle);
   if(Math.abs(da)>.018){
-    waveV += da*.9;
-    wave += Math.min(.16,Math.abs(da)*.32);
+    waveV+=da*.9;
+    wave+=Math.min(.16,Math.abs(da)*.32);
   }
-  wave += Math.min(.12,impulse*.006);
+  wave+=Math.min(.12,impulse*.006);
   wave=Math.min(.24,Math.max(0,wave));
   lastGravityAngle=a;
-  targetGX=x; targetGY=y;
+  targetGX=x;targetGY=y;
 }
 
 function onMotion(e){
-  const a=e.accelerationIncludingGravity;
-  if(!a) return;
+  const a=e.accelerationIncludingGravity;if(!a)return;
   motionCount++;
-  latest.ax=a.x; latest.ay=a.y; latest.az=a.z; latest.screenAngle=screenAngle();
-
-  // Portrait iOS: +X right. Gravity toward the bottom is typically -Y,
-  // so screen-space Y is inverted before applying display rotation.
-  let p=rotateForScreen(a.x||0,-(a.y||0),latest.screenAngle);
+  latest.ax=a.x;latest.ay=a.y;latest.az=a.z;latest.screenAngle=screenAngle();
+  const p=rotateForScreen(a.x||0,-(a.y||0),latest.screenAngle);
   const mag=Math.hypot(a.x||0,a.y||0,a.z||0);
-  const impulse=Math.max(0,Math.abs(mag-9.81));
-  setGravity(p.x,p.y,impulse);
-
+  setGravity(p.x,p.y,Math.max(0,Math.abs(mag-9.81)));
   sensorActive=true;
   statusEl.textContent='センサー ON';
   updateDebug();
 }
-
 function onOrientation(e){
   orientCount++;
-  latest.alpha=e.alpha; latest.beta=e.beta; latest.gamma=e.gamma;
+  latest.alpha=e.alpha;latest.beta=e.beta;latest.gamma=e.gamma;
   updateDebug();
 }
-
-function format(v){
-  return (typeof v==='number' && Number.isFinite(v)) ? v.toFixed(2) : '—';
-}
-
+function fmt(v){return(typeof v==='number'&&Number.isFinite(v))?v.toFixed(2):'—'}
 function updateDebug(extra=''){
-  if(debugEl.classList.contains('hidden')) return;
-  debugEl.textContent =
+  if(debugEl.classList.contains('hidden'))return;
+  debugEl.textContent=
 `SECURE CONTEXT : ${window.isSecureContext}
 PROTOCOL       : ${location.protocol}
 MOTION EVENTS  : ${motionCount}
@@ -196,92 +120,66 @@ ORIENT EVENTS  : ${orientCount}
 SCREEN ANGLE   : ${latest.screenAngle}°
 
 ACCEL + GRAVITY
-X : ${format(latest.ax)}
-Y : ${format(latest.ay)}
-Z : ${format(latest.az)}
+X : ${fmt(latest.ax)}
+Y : ${fmt(latest.ay)}
+Z : ${fmt(latest.az)}
 
 ORIENTATION
-alpha : ${format(latest.alpha)}
-beta  : ${format(latest.beta)}
-gamma : ${format(latest.gamma)}
+alpha : ${fmt(latest.alpha)}
+beta  : ${fmt(latest.beta)}
+gamma : ${fmt(latest.gamma)}
 
-MODE           : ${fallbackMode ? 'POINTER FALLBACK' : (sensorActive ? 'DEVICE SENSOR' : 'WAITING')}
+MODE : ${fallbackMode?'POINTER FALLBACK':sensorActive?'DEVICE SENSOR':'WAITING'}
 ${extra}`;
 }
 
 async function requestSensors(){
-  startBtn.disabled=true;
-  startBtn.textContent='確認中…';
-  let notes=[];
-
+  startBtn.disabled=true;startBtn.textContent='確認中…';
   try{
-    if(!window.isSecureContext) notes.push('HTTPSではありません');
-
-    let motionPermission='not-required';
-    let orientationPermission='not-required';
-
-    if(typeof DeviceMotionEvent==='undefined'){
-      throw new Error('DeviceMotionEvent がありません');
-    }
-
+    let mp='not-required',op='not-required';
+    if(typeof DeviceMotionEvent==='undefined')throw new Error('DeviceMotionEvent がありません');
     if(typeof DeviceMotionEvent.requestPermission==='function'){
-      motionPermission=await DeviceMotionEvent.requestPermission();
-      if(motionPermission!=='granted') throw new Error('モーションセンサーが許可されませんでした');
+      mp=await DeviceMotionEvent.requestPermission();
+      if(mp!=='granted')throw new Error('モーションセンサーが許可されませんでした');
     }
-
-    if(typeof DeviceOrientationEvent!=='undefined' &&
-       typeof DeviceOrientationEvent.requestPermission==='function'){
-      orientationPermission=await DeviceOrientationEvent.requestPermission();
-      // orientation is diagnostic only; motion can still work without it.
+    if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+      op=await DeviceOrientationEvent.requestPermission();
     }
-
     addEventListener('devicemotion',onMotion,{passive:true});
-    if(typeof DeviceOrientationEvent!=='undefined'){
-      addEventListener('deviceorientation',onOrientation,{passive:true});
-    }
-
+    if(typeof DeviceOrientationEvent!=='undefined')addEventListener('deviceorientation',onOrientation,{passive:true});
     overlay.classList.add('hidden');
     statusEl.textContent='センサー待受中… iPhoneを傾けてください';
-    updateDebug(`motion permission: ${motionPermission}
-orientation permission: ${orientationPermission}
-${notes.join('\n')}`);
 
-    // If WebKit accepted the request but no event arrives, reveal a useful message.
     setTimeout(()=>{
       if(motionCount===0){
-        statusEl.textContent='センサーイベント未受信 — 「診断」を確認';
+        statusEl.textContent='センサーイベント未受信 — 診断を確認';
         debugEl.classList.remove('hidden');
-        updateDebug('許可後も motion event が0です。Safari本体でHTTPSページを開いているか確認してください。');
+        updateDebug(`motion permission: ${mp}
+orientation permission: ${op}
+許可後もmotion eventが0です。Safari本体でHTTPSページを開いているか確認してください。`);
       }
     },1800);
-
   }catch(err){
     overlay.classList.add('hidden');
     fallbackMode=true;
-    statusEl.textContent='センサー不可 — 指で液体方向をテスト可能';
+    statusEl.textContent='センサー不可 — 指で方向テスト可能';
     debugEl.classList.remove('hidden');
-    updateDebug('ERROR: '+(err && err.message ? err.message : String(err)));
+    updateDebug('ERROR: '+(err&&err.message?err.message:String(err)));
   }finally{
-    startBtn.disabled=false;
-    startBtn.textContent='センサーを有効にする';
+    startBtn.disabled=false;startBtn.textContent='センサーを有効にする';
   }
 }
 startBtn.addEventListener('click',requestSensors);
-
-debugBtn.addEventListener('click',()=>{
-  debugEl.classList.toggle('hidden');
-  updateDebug();
-});
-
-fillEl.addEventListener('input',()=>{ fill=Number(fillEl.value)/100; });
+debugBtn.addEventListener('click',()=>{debugEl.classList.toggle('hidden');updateDebug()});
+fillEl.addEventListener('input',()=>fill=Number(fillEl.value)/100);
 
 function pointerGravity(e){
   const r=dial.getBoundingClientRect();
   setGravity((e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1,0);
 }
 dial.addEventListener('pointerdown',e=>{
-  if(!fallbackMode) return;
-  pointerDown=true; dial.setPointerCapture(e.pointerId); pointerGravity(e);
+  if(!fallbackMode)return;
+  pointerDown=true;dial.setPointerCapture(e.pointerId);pointerGravity(e);
 });
 dial.addEventListener('pointermove',e=>{if(fallbackMode&&pointerDown)pointerGravity(e)});
 dial.addEventListener('pointerup',()=>pointerDown=false);
@@ -290,89 +188,106 @@ dial.addEventListener('pointercancel',()=>pointerDown=false);
 function update(dt){
   gx+=(targetGX-gx)*(1-Math.pow(.001,dt));
   gy+=(targetGY-gy)*(1-Math.pow(.001,dt));
-
-  waveV+=(-wave*9.0)*dt;
+  waveV+=(-wave*9)*dt;
   waveV*=Math.pow(.16,dt);
   wave+=waveV*dt;
   wave*=Math.pow(.60,dt);
   wave=Math.max(0,Math.min(.24,wave));
-  phase+=dt*(3.0+wave*20);
+  phase+=dt*(3+wave*20);
+}
 
-  for(const b of bubbles){
-    b.vx+=(-gx*.16 + Math.sin(phase+b.seed)*.012)*dt;
-    b.vy+=(-gy*.16 + Math.cos(phase*.77+b.seed)*.010)*dt;
-    b.vx*=Math.pow(.38,dt); b.vy*=Math.pow(.38,dt);
-    b.x+=b.vx*dt; b.y+=b.vy*dt;
-    let m=Math.hypot(b.x,b.y);
-    if(m>.60){b.x*=.975;b.y*=.975;b.vx*=-.22;b.vy*=-.22}
+function drawDot(x,y,r,color,glow=0){
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle=color;
+  if(glow>0){
+    ctx.shadowBlur=glow;
+    ctx.shadowColor=color;
   }
+  ctx.fill();
+  ctx.shadowBlur=0;
 }
 
 function draw(){
   ctx.clearRect(0,0,W,H);
+
+  // 内側の暗い面
   ctx.save();
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.clip();
-
-  const bg=ctx.createRadialGradient(cx-R*.25,cy-R*.32,R*.04,cx,cy,R);
-  bg.addColorStop(0,'#102435'); bg.addColorStop(1,'#010305');
+  const bg=ctx.createRadialGradient(cx-R*.22,cy-R*.32,R*.04,cx,cy,R);
+  bg.addColorStop(0,'#0a1720');
+  bg.addColorStop(1,'#010305');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
   const gm=Math.hypot(gx,gy)||1;
-  const nx=gx/gm, ny=gy/gm;       // screen-space down
-  const tx=-ny, ty=nx;             // liquid surface direction
+  const nx=gx/gm,ny=gy/gm;   // 重力方向
+  const tx=-ny,ty=nx;         // 液面方向
   const offset=(.5-fill)*R*1.48;
 
-  const pts=[],N=84;
-  for(let i=0;i<N;i++){
-    const u=(-1.38+2.76*i/(N-1))*R;
-    const edge=Math.max(0,1-Math.pow(Math.abs(u)/(R*1.4),4));
-    const wobble=(Math.sin(phase+u/R*4.9)*.70+
-                  Math.sin(phase*1.63-u/R*9.1)*.22)*wave*R*edge;
-    pts.push({x:cx+tx*u+nx*(offset+wobble),y:cy+ty*u+ny*(offset+wobble)});
-  }
+  const cell=(R*2)/(GRID-1);
+  const dotR=cell*DOT_RATIO;
 
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x,pts[0].y);
-  for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
-  const far=R*3,p0=pts[0],p1=pts[pts.length-1];
-  ctx.lineTo(p1.x+nx*far,p1.y+ny*far);
-  ctx.lineTo(p0.x+nx*far,p0.y+ny*far);
-  ctx.closePath();
+  for(let iy=0;iy<GRID;iy++){
+    for(let ix=0;ix<GRID;ix++){
+      const x=cx-R+ix*cell;
+      const y=cy-R+iy*cell;
 
-  const grad=ctx.createLinearGradient(cx-nx*R,cy-ny*R,cx+nx*R,cy+ny*R);
-  grad.addColorStop(0,'rgba(110,244,255,.94)');
-  grad.addColorStop(.32,'rgba(32,190,239,.97)');
-  grad.addColorStop(1,'rgba(2,70,158,.99)');
-  ctx.fillStyle=grad;ctx.fill();
+      const rr=Math.hypot(x-cx,y-cy);
+      if(rr>R-cell*.35)continue;
 
-  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
-  for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
-  ctx.strokeStyle='rgba(205,252,255,.95)';ctx.lineWidth=2.5*dpr;
-  ctx.shadowBlur=13*dpr;ctx.shadowColor='rgba(80,230,255,.85)';ctx.stroke();ctx.shadowBlur=0;
+      // 重力方向の深さ
+      const alongG=(x-cx)*nx+(y-cy)*ny;
 
-  for(const b of bubbles){
-    const px=cx+b.x*R*1.55,py=cy+b.y*R*1.55;
-    const depth=(px-cx)*nx+(py-cy)*ny-offset;
-    if(depth>7*dpr){
-      const rr=b.r*R;
-      ctx.beginPath();ctx.arc(px,py,rr,0,Math.PI*2);
-      ctx.strokeStyle='rgba(223,253,255,.70)';ctx.lineWidth=Math.max(1,1.2*dpr);ctx.stroke();
-      ctx.beginPath();ctx.arc(px-rr*.25,py-rr*.28,rr*.17,0,Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,.62)';ctx.fill();
+      // 液面に沿った位置
+      const alongT=(x-cx)*tx+(y-cy)*ty;
+
+      // 波を液面に足す
+      const edge=Math.max(0,1-Math.pow(Math.abs(alongT)/(R*1.05),4));
+      const wobble=(Math.sin(phase+alongT/R*5.2)*.72 +
+                    Math.sin(phase*1.55-alongT/R*9.2)*.22) *
+                    wave*R*edge;
+
+      const liquidDepth=alongG-(offset+wobble);
+
+      // 常時見える「消灯ドット」
+      if(liquidDepth<=0){
+        drawDot(x,y,dotR,'rgba(50,90,105,.18)',0);
+      }else{
+        // 深いほど青く、液面付近ほど白〜シアン
+        const t=Math.min(1,liquidDepth/(R*.72));
+        const surface=Math.max(0,1-liquidDepth/(cell*2.4));
+
+        if(surface>.10){
+          drawDot(x,y,dotR,
+            `rgba(${Math.round(170+70*surface)},${Math.round(235+18*surface)},255,.98)`,
+            6*dpr);
+        }else{
+          const r=Math.round(35-22*t);
+          const g=Math.round(205-95*t);
+          const b=Math.round(245-35*t);
+          drawDot(x,y,dotR,`rgba(${r},${g},${b},.96)`,3*dpr);
+        }
+      }
     }
   }
 
   ctx.restore();
+
+  // 内周
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,255,255,.09)';ctx.lineWidth=2*dpr;ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,.09)';
+  ctx.lineWidth=2*dpr;
+  ctx.stroke();
 }
 
 function frame(t){
-  const dt=Math.min(.034,(t-lastT)/1000||.016);lastT=t;
-  update(dt);draw();requestAnimationFrame(frame);
+  const dt=Math.min(.034,(t-lastT)/1000||.016);
+  lastT=t;
+  update(dt);
+  draw();
+  requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
-updateDebug();
 })();
 </script>
 </body>
