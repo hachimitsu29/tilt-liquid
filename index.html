@@ -4,23 +4,35 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050a">
-<title>Tilt Liquid — Dot Matrix</title>
+<title>Tilt Liquid — Particle Dot Matrix</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02050a;color:#eef8ff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-body{touch-action:none}.app{width:100vw;height:100dvh;display:grid;place-items:center;position:relative;padding:58px 16px 76px}
+body{touch-action:none}
+.app{width:100vw;height:100dvh;display:grid;place-items:center;position:relative;padding:58px 16px 76px}
 .dial{position:relative;width:min(90vw,72vh);aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 48% 40%,#0a131c 0%,#04070b 65%,#010204 100%);box-shadow:0 0 0 1px #ffffff24,0 0 0 10px #ffffff08,0 26px 90px #000b,inset 0 0 80px #000d}
 canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 .glass{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 32% 18%,#ffffff18,transparent 17%),linear-gradient(145deg,#ffffff0a,transparent 30%);box-shadow:inset 0 0 0 2px #ffffff14}
-.header{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));text-align:center;pointer-events:none}.title{font-size:11px;font-weight:800;letter-spacing:.22em;color:#9cb4c8}.status{font-size:12px;margin-top:5px;color:#eef8ffd9}
-.bottom{position:absolute;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));max-width:560px;margin:auto;display:flex;gap:9px;align-items:center}.panel{background:#0a1018d1;border:1px solid #ffffff1a;backdrop-filter:blur(14px);border-radius:15px;padding:9px 11px}.fillpanel{flex:1;display:flex;gap:9px;align-items:center}.fillpanel label{font-size:11px;color:#8da6bb;white-space:nowrap}.fillpanel input{width:100%}.smallbtn{border:1px solid #ffffff1f;background:#ffffff0f;color:#eef8ff;border-radius:15px;padding:11px 13px;font-weight:700}
-.overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;background:#010306e0;backdrop-filter:blur(18px)}.card{width:min(460px,100%);border:1px solid #ffffff1c;background:#09111a;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000a}.card h1{font-size:23px;margin:0 0 10px;text-align:center}.card p{font-size:14px;line-height:1.65;color:#8da6bb;margin:0 0 16px}.primary{width:100%;border:0;border-radius:15px;padding:15px;font-size:16px;font-weight:850;background:#62e7ff;color:#00151b}.note{font-size:11px!important;margin:12px 0 0!important;text-align:center}.hidden{display:none!important}
+.header{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));text-align:center;pointer-events:none}
+.title{font-size:11px;font-weight:800;letter-spacing:.22em;color:#9cb4c8}
+.status{font-size:12px;margin-top:5px;color:#eef8ffd9}
+.bottom{position:absolute;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));max-width:560px;margin:auto;display:flex;gap:9px;align-items:center}
+.panel{background:#0a1018d1;border:1px solid #ffffff1a;backdrop-filter:blur(14px);border-radius:15px;padding:9px 11px}
+.fillpanel{flex:1;display:flex;gap:9px;align-items:center}.fillpanel label{font-size:11px;color:#8da6bb;white-space:nowrap}.fillpanel input{width:100%}
+.smallbtn{border:1px solid #ffffff1f;background:#ffffff0f;color:#eef8ff;border-radius:15px;padding:11px 13px;font-weight:700}
+.overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;background:#010306e0;backdrop-filter:blur(18px)}
+.card{width:min(460px,100%);border:1px solid #ffffff1c;background:#09111a;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000a}
+.card h1{font-size:23px;margin:0 0 10px;text-align:center}
+.card p{font-size:14px;line-height:1.65;color:#8da6bb;margin:0 0 16px}
+.primary{width:100%;border:0;border-radius:15px;padding:15px;font-size:16px;font-weight:850;background:#62e7ff;color:#00151b}
+.note{font-size:11px!important;margin:12px 0 0!important;text-align:center}
+.hidden{display:none!important}
 .debug{position:fixed;z-index:40;inset:auto 10px calc(max(64px,env(safe-area-inset-bottom)) + 6px) 10px;max-height:46vh;overflow:auto;background:#03080df0;border:1px solid #ffffff1f;border-radius:16px;padding:12px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;color:#ccecff}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header"><div class="title">TILT LIQUID / DOT MATRIX</div><div class="status" id="status">センサー待機中</div></div>
+  <div class="header"><div class="title">TILT LIQUID / PARTICLE DOT MATRIX</div><div class="status" id="status">センサー待機中</div></div>
   <div class="dial" id="dial"><canvas id="canvas"></canvas><div class="glass"></div></div>
   <div class="bottom">
     <div class="panel fillpanel"><label>液体量</label><input id="fill" type="range" min="18" max="82" value="56"></div>
@@ -29,7 +41,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 </div>
 <div class="overlay" id="overlay"><div class="card">
   <h1>ドット液体テスト</h1>
-  <p>iPhoneを傾けると、ドットマトリクス状の液体が重力方向へ動きます。勢いよく傾けると液面がチャプチャプ揺れます。</p>
+  <p>iPhoneを傾けると、粒子ベースの液体がドットマトリクス表示として動きます。勢いよく動かすと、波や飛沫も出ます。</p>
   <button class="primary" id="startBtn">センサーを有効にする</button>
   <p class="note">Safariで開いて、許可画面が出たら「許可」を選びます。</p>
 </div></div>
@@ -44,13 +56,20 @@ const debugEl=$('debug'),debugBtn=$('debugBtn');
 
 let W=600,H=600,cx=300,cy=300,R=290,dpr=1,fill=.56;
 let targetGX=0,targetGY=1,gx=0,gy=1;
-let wave=0,waveV=0,phase=0,lastT=performance.now();
-let lastGravityAngle=Math.PI/2,motionCount=0,orientCount=0,sensorActive=false,fallbackMode=false,pointerDown=false;
-let latest={ax:null,ay:null,az:null,beta:null,gamma:null,alpha:null,screenAngle:0};
+let kickX=0,kickY=0,lastT=performance.now();
+let motionCount=0,orientCount=0,sensorActive=false,fallbackMode=false,pointerDown=false;
+let latest={ax:null,ay:null,az:null,linx:null,liny:null,beta:null,gamma:null,alpha:null,screenAngle:0};
+let prevLinX=0,prevLinY=0;
 
-// ドット設定
-const GRID = 31;          // 31×31の仮想ドット
-const DOT_RATIO = 0.33;   // セル幅に対するドット半径
+const GRID=31;
+const BOUND=0.90;
+const DOT_RATIO=0.33;
+const density=new Float32Array(GRID*GRID);
+const smoothDensity=new Float32Array(GRID*GRID);
+let particles=[];
+let particleRadius=0.042;
+let particleCount=260;
+let splashEnergy=0;
 
 function resize(){
   const r=dial.getBoundingClientRect();
@@ -59,7 +78,36 @@ function resize(){
   canvas.height=Math.round(r.height*dpr);
   W=canvas.width;H=canvas.height;cx=W/2;cy=H/2;R=Math.min(W,H)*.48;
 }
-addEventListener('resize',resize,{passive:true});resize();
+addEventListener('resize',resize,{passive:true});
+resize();
+
+function rand(a,b){return a+Math.random()*(b-a)}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function smoothstep(a,b,x){x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x)}
+
+function recomputeParticleConfig(){
+  particleCount=Math.round(130+fill*290);
+  particleRadius=clamp(0.051-fill*0.020,0.030,0.045);
+}
+
+function surfaceYForFill(f){
+  return 0.78 - f*1.55;
+}
+
+function seedParticles(){
+  recomputeParticleConfig();
+  particles=[];
+  const surfaceY=surfaceYForFill(fill);
+  let tries=0;
+  while(particles.length<particleCount && tries<particleCount*80){
+    tries++;
+    const x=rand(-BOUND*0.95,BOUND*0.95);
+    const y=rand(surfaceY,BOUND*0.95);
+    if(x*x+y*y>(BOUND-particleRadius)*(BOUND-particleRadius))continue;
+    particles.push({x,y,px:x,py:y,vx:0,vy:0});
+  }
+}
+seedParticles();
 
 function screenAngle(){
   if(screen.orientation&&typeof screen.orientation.angle==='number')return screen.orientation.angle;
@@ -73,33 +121,38 @@ function rotateForScreen(x,y,a){
   if(a===180)return{x:-x,y:-y};
   return{x,y};
 }
-function adiff(a,b){
-  let d=(a-b)%(Math.PI*2);
-  if(d>Math.PI)d-=Math.PI*2;
-  if(d<-Math.PI)d+=Math.PI*2;
-  return d;
-}
-function setGravity(x,y,impulse=0){
-  const m=Math.hypot(x,y); if(m<.08)return;
+
+function setGravity(x,y,linx=0,liny=0){
+  const m=Math.hypot(x,y);
+  if(m<0.08)return;
   x/=m;y/=m;
-  const a=Math.atan2(y,x),da=adiff(a,lastGravityAngle);
-  if(Math.abs(da)>.018){
-    waveV+=da*.9;
-    wave+=Math.min(.16,Math.abs(da)*.32);
-  }
-  wave+=Math.min(.12,impulse*.006);
-  wave=Math.min(.24,Math.max(0,wave));
-  lastGravityAngle=a;
   targetGX=x;targetGY=y;
+
+  const jerkX=linx-prevLinX;
+  const jerkY=liny-prevLinY;
+  prevLinX=linx; prevLinY=liny;
+
+  kickX += clamp(linx*0.030 + jerkX*0.055,-0.70,0.70);
+  kickY += clamp(liny*0.030 + jerkY*0.055,-0.70,0.70);
+  splashEnergy = clamp(splashEnergy + Math.hypot(linx,liny)*0.10 + Math.hypot(jerkX,jerkY)*0.22,0,4);
 }
 
 function onMotion(e){
-  const a=e.accelerationIncludingGravity;if(!a)return;
+  const a=e.accelerationIncludingGravity;
+  if(!a)return;
   motionCount++;
-  latest.ax=a.x;latest.ay=a.y;latest.az=a.z;latest.screenAngle=screenAngle();
+  latest.ax=a.x; latest.ay=a.y; latest.az=a.z; latest.screenAngle=screenAngle();
+
   const p=rotateForScreen(a.x||0,-(a.y||0),latest.screenAngle);
-  const mag=Math.hypot(a.x||0,a.y||0,a.z||0);
-  setGravity(p.x,p.y,Math.max(0,Math.abs(mag-9.81)));
+
+  let linx=0,liny=0;
+  if(e.acceleration){
+    const lin=rotateForScreen(e.acceleration.x||0,-(e.acceleration.y||0),latest.screenAngle);
+    linx=lin.x; liny=lin.y;
+  }
+  latest.linx=linx; latest.liny=liny;
+
+  setGravity(p.x,p.y,linx,liny);
   sensorActive=true;
   statusEl.textContent='センサー ON';
   updateDebug();
@@ -124,11 +177,16 @@ X : ${fmt(latest.ax)}
 Y : ${fmt(latest.ay)}
 Z : ${fmt(latest.az)}
 
+LINEAR ACCEL
+X : ${fmt(latest.linx)}
+Y : ${fmt(latest.liny)}
+
 ORIENTATION
 alpha : ${fmt(latest.alpha)}
 beta  : ${fmt(latest.beta)}
 gamma : ${fmt(latest.gamma)}
 
+PARTICLES : ${particles.length}
 MODE : ${fallbackMode?'POINTER FALLBACK':sensorActive?'DEVICE SENSOR':'WAITING'}
 ${extra}`;
 }
@@ -154,9 +212,7 @@ async function requestSensors(){
       if(motionCount===0){
         statusEl.textContent='センサーイベント未受信 — 診断を確認';
         debugEl.classList.remove('hidden');
-        updateDebug(`motion permission: ${mp}
-orientation permission: ${op}
-許可後もmotion eventが0です。Safari本体でHTTPSページを開いているか確認してください。`);
+        updateDebug(`motion permission: ${mp}\norientation permission: ${op}\n許可後もmotion eventが0です。Safari本体でHTTPSページを開いているか確認してください。`);
       }
     },1800);
   }catch(err){
@@ -171,11 +227,13 @@ orientation permission: ${op}
 }
 startBtn.addEventListener('click',requestSensors);
 debugBtn.addEventListener('click',()=>{debugEl.classList.toggle('hidden');updateDebug()});
-fillEl.addEventListener('input',()=>fill=Number(fillEl.value)/100);
+fillEl.addEventListener('input',()=>{fill=Number(fillEl.value)/100;seedParticles();});
 
 function pointerGravity(e){
   const r=dial.getBoundingClientRect();
-  setGravity((e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1,0);
+  const nx=(e.clientX-r.left)/r.width*2-1;
+  const ny=(e.clientY-r.top)/r.height*2-1;
+  setGravity(nx,ny,0,0);
 }
 dial.addEventListener('pointerdown',e=>{
   if(!fallbackMode)return;
@@ -185,95 +243,208 @@ dial.addEventListener('pointermove',e=>{if(fallbackMode&&pointerDown)pointerGrav
 dial.addEventListener('pointerup',()=>pointerDown=false);
 dial.addEventListener('pointercancel',()=>pointerDown=false);
 
-function update(dt){
-  gx+=(targetGX-gx)*(1-Math.pow(.001,dt));
-  gy+=(targetGY-gy)*(1-Math.pow(.001,dt));
-  waveV+=(-wave*9)*dt;
-  waveV*=Math.pow(.16,dt);
-  wave+=waveV*dt;
-  wave*=Math.pow(.60,dt);
-  wave=Math.max(0,Math.min(.24,wave));
-  phase+=dt*(3+wave*20);
+function confineToCircle(p){
+  const limit=BOUND-particleRadius*0.70;
+  const d=Math.hypot(p.x,p.y);
+  if(d>limit){
+    const nx=p.x/d, ny=p.y/d;
+    p.x=nx*limit; p.y=ny*limit;
+    const vn=p.vx*nx+p.vy*ny;
+    if(vn>0){
+      p.vx-=vn*1.45*nx;
+      p.vy-=vn*1.45*ny;
+    }
+    p.vx*=0.93; p.vy*=0.93;
+  }
+}
+
+function solveParticlePair(a,b){
+  const dx=b.x-a.x, dy=b.y-a.y;
+  const d2=dx*dx+dy*dy;
+  const minDist=particleRadius*2.02;
+  if(d2<1e-8 || d2>minDist*minDist)return;
+  const d=Math.sqrt(d2);
+  const nx=dx/d, ny=dy/d;
+  const overlap=(minDist-d);
+  const push=overlap*0.50;
+  a.x-=nx*push; a.y-=ny*push;
+  b.x+=nx*push; b.y+=ny*push;
+
+  const rvx=b.vx-a.vx, rvy=b.vy-a.vy;
+  const sep=rvx*nx+rvy*ny;
+  if(sep<0){
+    const imp=sep*0.08;
+    a.vx+=nx*imp; a.vy+=ny*imp;
+    b.vx-=nx*imp; b.vy-=ny*imp;
+  }
+}
+
+function applyCohesion(){
+  const range=particleRadius*3.1;
+  const range2=range*range;
+  for(let i=0;i<particles.length;i++){
+    const a=particles[i];
+    let cx=0,cy=0,count=0;
+    for(let j=0;j<particles.length;j++){
+      if(i===j)continue;
+      const b=particles[j];
+      const dx=b.x-a.x, dy=b.y-a.y;
+      const d2=dx*dx+dy*dy;
+      if(d2<range2){cx+=b.x; cy+=b.y; count++;}
+    }
+    if(count){
+      cx/=count; cy/=count;
+      a.vx += (cx-a.x)*0.015;
+      a.vy += (cy-a.y)*0.015;
+    }
+  }
+}
+
+function updateParticles(dt){
+  gx += (targetGX-gx)*(1-Math.pow(0.0008,dt));
+  gy += (targetGY-gy)*(1-Math.pow(0.0008,dt));
+  kickX *= Math.pow(0.05,dt);
+  kickY *= Math.pow(0.05,dt);
+  splashEnergy *= Math.pow(0.16,dt);
+
+  const gm=Math.hypot(gx,gy)||1;
+  const ax=(gx/gm)*2.55 + kickX*2.15;
+  const ay=(gy/gm)*2.55 + kickY*2.15;
+
+  const jitter = splashEnergy*0.0016;
+  for(const p of particles){
+    p.vx += ax*dt + (Math.random()-.5)*jitter;
+    p.vy += ay*dt + (Math.random()-.5)*jitter;
+    p.vx *= Math.pow(0.16,dt*0.60);
+    p.vy *= Math.pow(0.16,dt*0.60);
+    p.x += p.vx*dt;
+    p.y += p.vy*dt;
+  }
+
+  for(let k=0;k<3;k++){
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        solveParticlePair(particles[i],particles[j]);
+      }
+    }
+    for(const p of particles)confineToCircle(p);
+  }
+  applyCohesion();
+  for(const p of particles)confineToCircle(p);
+}
+
+function buildDensityField(){
+  density.fill(0);
+  const cell=(BOUND*2)/(GRID-1);
+  const influence=particleRadius*2.6;
+  const influenceCells=Math.ceil(influence/cell);
+  const invInfluence=1/influence;
+
+  for(const p of particles){
+    const gx=(p.x+BOUND)/(BOUND*2)*(GRID-1);
+    const gy=(p.y+BOUND)/(BOUND*2)*(GRID-1);
+    const ix0=Math.max(0,Math.floor(gx-influenceCells));
+    const ix1=Math.min(GRID-1,Math.ceil(gx+influenceCells));
+    const iy0=Math.max(0,Math.floor(gy-influenceCells));
+    const iy1=Math.min(GRID-1,Math.ceil(gy+influenceCells));
+
+    for(let iy=iy0; iy<=iy1; iy++){
+      const wy=-BOUND+iy*cell;
+      for(let ix=ix0; ix<=ix1; ix++){
+        const wx=-BOUND+ix*cell;
+        const dx=wx-p.x, dy=wy-p.y;
+        const dist=Math.hypot(dx,dy);
+        if(dist>influence)continue;
+        const q=1-dist*invInfluence;
+        density[iy*GRID+ix] += q*q*q*1.55;
+      }
+    }
+  }
+
+  for(let y=0;y<GRID;y++){
+    for(let x=0;x<GRID;x++){
+      let sum=0,w=0;
+      for(let oy=-1; oy<=1; oy++){
+        const yy=y+oy; if(yy<0||yy>=GRID)continue;
+        for(let ox=-1; ox<=1; ox++){
+          const xx=x+ox; if(xx<0||xx>=GRID)continue;
+          const ww=(ox===0&&oy===0)?4:((ox===0||oy===0)?2:1);
+          sum += density[yy*GRID+xx]*ww;
+          w += ww;
+        }
+      }
+      smoothDensity[y*GRID+x]=sum/w;
+    }
+  }
 }
 
 function drawDot(x,y,r,color,glow=0){
   ctx.beginPath();
   ctx.arc(x,y,r,0,Math.PI*2);
   ctx.fillStyle=color;
-  if(glow>0){
-    ctx.shadowBlur=glow;
-    ctx.shadowColor=color;
-  }
+  if(glow>0){ctx.shadowBlur=glow;ctx.shadowColor=color;}
   ctx.fill();
   ctx.shadowBlur=0;
 }
 
 function draw(){
   ctx.clearRect(0,0,W,H);
-
-  // 内側の暗い面
   ctx.save();
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.clip();
+
   const bg=ctx.createRadialGradient(cx-R*.22,cy-R*.32,R*.04,cx,cy,R);
   bg.addColorStop(0,'#0a1720');
   bg.addColorStop(1,'#010305');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
-  const gm=Math.hypot(gx,gy)||1;
-  const nx=gx/gm,ny=gy/gm;   // 重力方向
-  const tx=-ny,ty=nx;         // 液面方向
-  const offset=(.5-fill)*R*1.48;
-
+  buildDensityField();
   const cell=(R*2)/(GRID-1);
   const dotR=cell*DOT_RATIO;
 
-  for(let iy=0;iy<GRID;iy++){
-    for(let ix=0;ix<GRID;ix++){
+  for(let iy=0; iy<GRID; iy++){
+    for(let ix=0; ix<GRID; ix++){
       const x=cx-R+ix*cell;
       const y=cy-R+iy*cell;
-
       const rr=Math.hypot(x-cx,y-cy);
       if(rr>R-cell*.35)continue;
 
-      // 重力方向の深さ
-      const alongG=(x-cx)*nx+(y-cy)*ny;
+      const idx=iy*GRID+ix;
+      const d=smoothDensity[idx];
+      const on=d>0.055;
 
-      // 液面に沿った位置
-      const alongT=(x-cx)*tx+(y-cy)*ty;
-
-      // 波を液面に足す
-      const edge=Math.max(0,1-Math.pow(Math.abs(alongT)/(R*1.05),4));
-      const wobble=(Math.sin(phase+alongT/R*5.2)*.72 +
-                    Math.sin(phase*1.55-alongT/R*9.2)*.22) *
-                    wave*R*edge;
-
-      const liquidDepth=alongG-(offset+wobble);
-
-      // 常時見える「消灯ドット」
-      if(liquidDepth<=0){
+      if(!on){
         drawDot(x,y,dotR,'rgba(50,90,105,.18)',0);
-      }else{
-        // 深いほど青く、液面付近ほど白〜シアン
-        const t=Math.min(1,liquidDepth/(R*.72));
-        const surface=Math.max(0,1-liquidDepth/(cell*2.4));
+        continue;
+      }
 
-        if(surface>.10){
-          drawDot(x,y,dotR,
-            `rgba(${Math.round(170+70*surface)},${Math.round(235+18*surface)},255,.98)`,
-            6*dpr);
-        }else{
-          const r=Math.round(35-22*t);
-          const g=Math.round(205-95*t);
-          const b=Math.round(245-35*t);
-          drawDot(x,y,dotR,`rgba(${r},${g},${b},.96)`,3*dpr);
-        }
+      const here=d;
+      const up = iy>0 ? smoothDensity[(iy-1)*GRID+ix] : here;
+      const down = iy<GRID-1 ? smoothDensity[(iy+1)*GRID+ix] : here;
+      const left = ix>0 ? smoothDensity[iy*GRID+(ix-1)] : here;
+      const right = ix<GRID-1 ? smoothDensity[iy*GRID+(ix+1)] : here;
+      const grad=Math.hypot(right-left,down-up);
+
+      const surface=clamp(grad*1.4,0,1);
+      const deep=clamp((here-0.18)/0.55,0,1);
+      const dropletBoost=smoothstep(0.055,0.14,here)*(1-deep)*0.6;
+
+      if(surface>0.24 || dropletBoost>0.25){
+        const a=0.90+Math.min(0.10,surface*0.12+dropletBoost*0.18);
+        drawDot(x,y,dotR,
+          `rgba(${Math.round(165+80*surface)},${Math.round(230+20*surface)},255,${a.toFixed(3)})`,
+          (5+surface*7+dropletBoost*5)*dpr
+        );
+      }else{
+        const r=Math.round(30-18*deep);
+        const g=Math.round(208-92*deep);
+        const b=Math.round(245-34*deep);
+        const a=(0.90+deep*0.08).toFixed(3);
+        drawDot(x,y,dotR,`rgba(${r},${g},${b},${a})`,(2.5+deep*3.3)*dpr);
       }
     }
   }
 
   ctx.restore();
-
-  // 内周
   ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);
   ctx.strokeStyle='rgba(255,255,255,.09)';
   ctx.lineWidth=2*dpr;
@@ -281,9 +452,9 @@ function draw(){
 }
 
 function frame(t){
-  const dt=Math.min(.034,(t-lastT)/1000||.016);
+  const dt=Math.min(.030,(t-lastT)/1000||.016);
   lastT=t;
-  update(dt);
+  updateParticles(dt);
   draw();
   requestAnimationFrame(frame);
 }
