@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050a">
-<title>Tilt Liquid — Particle Dot Matrix</title>
+<title>Tilt Liquid — Particle Dot Matrix Fast</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02050a;color:#eef8ff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
@@ -32,7 +32,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 </head>
 <body>
 <div class="app">
-  <div class="header"><div class="title">TILT LIQUID / PARTICLE DOT MATRIX</div><div class="status" id="status">センサー待機中</div></div>
+  <div class="header"><div class="title">TILT LIQUID / PARTICLE DOT MATRIX — FAST</div><div class="status" id="status">センサー待機中</div></div>
   <div class="dial" id="dial"><canvas id="canvas"></canvas><div class="glass"></div></div>
   <div class="bottom">
     <div class="panel fillpanel"><label>液体量</label><input id="fill" type="range" min="18" max="82" value="56"></div>
@@ -258,6 +258,22 @@ function confineToCircle(p){
   }
 }
 
+const HASH_N=18;
+const HASH_CELL=(BOUND*2)/HASH_N;
+const buckets=Array.from({length:HASH_N*HASH_N},()=>[]);
+
+function bucketCoord(v){
+  return clamp(Math.floor((v+BOUND)/HASH_CELL),0,HASH_N-1);
+}
+function rebuildBuckets(){
+  for(const b of buckets)b.length=0;
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i];
+    const bx=bucketCoord(p.x), by=bucketCoord(p.y);
+    buckets[by*HASH_N+bx].push(i);
+  }
+}
+
 function solveParticlePair(a,b){
   const dx=b.x-a.x, dy=b.y-a.y;
   const d2=dx*dx+dy*dy;
@@ -265,7 +281,7 @@ function solveParticlePair(a,b){
   if(d2<1e-8 || d2>minDist*minDist)return;
   const d=Math.sqrt(d2);
   const nx=dx/d, ny=dy/d;
-  const overlap=(minDist-d);
+  const overlap=minDist-d;
   const push=overlap*0.50;
   a.x-=nx*push; a.y-=ny*push;
   b.x+=nx*push; b.y+=ny*push;
@@ -273,66 +289,94 @@ function solveParticlePair(a,b){
   const rvx=b.vx-a.vx, rvy=b.vy-a.vy;
   const sep=rvx*nx+rvy*ny;
   if(sep<0){
-    const imp=sep*0.08;
+    const imp=sep*0.075;
     a.vx+=nx*imp; a.vy+=ny*imp;
     b.vx-=nx*imp; b.vy-=ny*imp;
   }
 }
 
+function solveLocalCollisions(){
+  rebuildBuckets();
+  for(let i=0;i<particles.length;i++){
+    const a=particles[i];
+    const bx=bucketCoord(a.x), by=bucketCoord(a.y);
+    for(let oy=-1;oy<=1;oy++){
+      const yy=by+oy;if(yy<0||yy>=HASH_N)continue;
+      for(let ox=-1;ox<=1;ox++){
+        const xx=bx+ox;if(xx<0||xx>=HASH_N)continue;
+        const bucket=buckets[yy*HASH_N+xx];
+        for(const j of bucket){
+          if(j<=i)continue;
+          solveParticlePair(a,particles[j]);
+        }
+      }
+    }
+  }
+}
+
 function applyCohesion(){
-  const range=particleRadius*3.1;
+  rebuildBuckets();
+  const range=particleRadius*3.15;
   const range2=range*range;
   for(let i=0;i<particles.length;i++){
     const a=particles[i];
-    let cx=0,cy=0,count=0;
-    for(let j=0;j<particles.length;j++){
-      if(i===j)continue;
-      const b=particles[j];
-      const dx=b.x-a.x, dy=b.y-a.y;
-      const d2=dx*dx+dy*dy;
-      if(d2<range2){cx+=b.x; cy+=b.y; count++;}
+    const bx=bucketCoord(a.x), by=bucketCoord(a.y);
+    let sx=0,sy=0,count=0;
+    for(let oy=-2;oy<=2;oy++){
+      const yy=by+oy;if(yy<0||yy>=HASH_N)continue;
+      for(let ox=-2;ox<=2;ox++){
+        const xx=bx+ox;if(xx<0||xx>=HASH_N)continue;
+        const bucket=buckets[yy*HASH_N+xx];
+        for(const j of bucket){
+          if(j===i)continue;
+          const b=particles[j];
+          const dx=b.x-a.x,dy=b.y-a.y;
+          if(dx*dx+dy*dy<range2){sx+=b.x;sy+=b.y;count++;}
+        }
+      }
     }
     if(count){
-      cx/=count; cy/=count;
-      a.vx += (cx-a.x)*0.015;
-      a.vy += (cy-a.y)*0.015;
+      sx/=count;sy/=count;
+      a.vx+=(sx-a.x)*0.013;
+      a.vy+=(sy-a.y)*0.013;
     }
   }
 }
 
 function updateParticles(dt){
-  gx += (targetGX-gx)*(1-Math.pow(0.0008,dt));
-  gy += (targetGY-gy)*(1-Math.pow(0.0008,dt));
-  kickX *= Math.pow(0.05,dt);
-  kickY *= Math.pow(0.05,dt);
-  splashEnergy *= Math.pow(0.16,dt);
+  // 入力方向はかなり素早く追従。液体そのものの慣性は粒子側で残す。
+  const follow=1-Math.exp(-22*dt);
+  gx+=(targetGX-gx)*follow;
+  gy+=(targetGY-gy)*follow;
+
+  // 振った時の衝撃は短く鋭く、飛沫だけ少し余韻を残す。
+  kickX*=Math.exp(-6.5*dt);
+  kickY*=Math.exp(-6.5*dt);
+  splashEnergy*=Math.exp(-2.4*dt);
 
   const gm=Math.hypot(gx,gy)||1;
-  const ax=(gx/gm)*2.55 + kickX*2.15;
-  const ay=(gy/gm)*2.55 + kickY*2.15;
+  const ax=(gx/gm)*5.2 + kickX*2.65;
+  const ay=(gy/gm)*5.2 + kickY*2.65;
 
-  const jitter = splashEnergy*0.0016;
+  const jitter=splashEnergy*0.0018;
+  const drag=Math.exp(-1.35*dt);
   for(const p of particles){
-    p.vx += ax*dt + (Math.random()-.5)*jitter;
-    p.vy += ay*dt + (Math.random()-.5)*jitter;
-    p.vx *= Math.pow(0.16,dt*0.60);
-    p.vy *= Math.pow(0.16,dt*0.60);
-    p.x += p.vx*dt;
-    p.y += p.vy*dt;
+    p.vx+=ax*dt+(Math.random()-.5)*jitter;
+    p.vy+=ay*dt+(Math.random()-.5)*jitter;
+    p.vx*=drag;
+    p.vy*=drag;
+    p.x+=p.vx*dt;
+    p.y+=p.vy*dt;
   }
 
-  for(let k=0;k<3;k++){
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        solveParticlePair(particles[i],particles[j]);
-      }
-    }
+  // 総当たりではなく近所の粒子だけを見るのでiPhoneで軽い。
+  for(let k=0;k<2;k++){
+    solveLocalCollisions();
     for(const p of particles)confineToCircle(p);
   }
   applyCohesion();
   for(const p of particles)confineToCircle(p);
 }
-
 function buildDensityField(){
   density.fill(0);
   const cell=(BOUND*2)/(GRID-1);
@@ -361,6 +405,7 @@ function buildDensityField(){
     }
   }
 
+  // ちょいブラーして粒の継ぎ目をなめらかに
   for(let y=0;y<GRID;y++){
     for(let x=0;x<GRID;x++){
       let sum=0,w=0;
@@ -452,7 +497,7 @@ function draw(){
 }
 
 function frame(t){
-  const dt=Math.min(.030,(t-lastT)/1000||.016);
+  const dt=Math.min(.024,(t-lastT)/1000||.016);
   lastT=t;
   updateParticles(dt);
   draw();
